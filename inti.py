@@ -7,7 +7,7 @@ import plotly.tools as tls
 from plotly.graph_objs import *
 
 stream = Stream(
-token='89fmomwu4g',
+token='vts52yaho1',
 maxpoints=100
 )
 TotalIn = Scatter(
@@ -17,6 +17,6 @@ mode='lines+markers',
 stream=stream
 )
 data = Data([TotalIn])
-layout = Layout(title='Stream Out Test 3')
+layout = Layout(title="Collector's Office 05-05-15")
 fig = Figure(data=data, layout=layout)
-unique_url = py.plot(fig, filename='Stream Out Test 3')
+unique_url = py.plot(fig, filename="Collector's Office 05-05-15")

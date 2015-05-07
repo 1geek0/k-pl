@@ -33,16 +33,16 @@ for row in dataR:
         tdList.append(td)
         print("New Plot")
         #Plotting the Total In Count *1
-        inStream = py.Stream('igrm3ibenv')
+        inStream = py.Stream('vts52yaho1')
         inStream.open()
         inStream.write(dict(x=td, y=inInt))
         inStream.close()
         #End of *1
         #Plotting the Total Out Count
-        outStream = py.Stream('89fmomwu4g')
-        outStream.open()
-        outStream.write(dict(x=td, y=outInt))
-        outStream.close()
+#        outStream = py.Stream('nhzfl55ut2')
+#        outStream.open()
+#        outStream.write(dict(x=td, y=outInt))
+#        outStream.close()
         print(row, file = doneFile)
       
 #stream = Stream(
