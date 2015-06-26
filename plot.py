@@ -5,10 +5,44 @@ import plotly.plotly as py
 from plotly.graph_objs import *
 from datetime import datetime
 import plotly.tools as tls
+from boto.dynamodb2.table import *;
+
+#DynamoDB initialization
+dbTable = Table('test_gate')
+dbQuery = dbTable.query_2(GateID__eq=1,index='GateID-n-index')
+r = 1
+for res in dbQuery:
+    #Get Item
+    t = str(r)
+    plotted = dbTable.get_item(uuid=t)
+    print(str(plotted['In']) + str(plotted['Plotted']))
+    r += 1
+    #Resources
+    inInt = int(res['In'])
+    #Time
+    yearInt = int(res['Year'])
+    monthInt = int(res['Month'])
+    dateInt = int(res['Date'])
+    hourInt = int(res['Hour'])
+    minuteInt = int(res['Minute'])
+    secondInt = int(res['Second'])
+    td = datetime(year=yearInt, month=monthInt, day=dateInt, hour=hourInt, minute=minuteInt, second=secondInt)
+    #Time Ends
+    if res['Plotted'] != 1:
+        #Plotting
+       # print("New Plot")
+        inStream = py.Stream('yspgbpf5c1')
+        inStream.open()
+        inStream.write(dict(x=td, y=inInt))
+        inStream.close()
+        plotted['Plotted'] = 1
+        plotted.save()
+    #else:
+      #  print("Already Plotted")
 
 
-dataFile = open('/home/pi/plotly/data.csv', 'a+')
-doneFile = open('/home/pi/plotly/done.log', 'a+')
+dsbfddfbdb = '''dataFile = open('/home/geek/k-pl/data.csv', 'a+')
+doneFile = open('/home/geek/k-pl/done.log', 'a+')
 
 m = mmap.mmap(doneFile.fileno(), 0, access=mmap.ACCESS_READ)
 
@@ -61,3 +95,5 @@ for row in dataR:
 #layout = Layout(title='Stream In Test 2')
 #fig = Figure(data=data, layout=layout)
 #unique_url = py.plot(fig, filename='Stream In Test 2')
+'''
+
