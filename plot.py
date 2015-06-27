@@ -8,13 +8,15 @@ import plotly.tools as tls
 from boto.dynamodb2.table import *;
 
 #DynamoDB initialization
-dbTable = Table('test_gate')
-dbQuery = dbTable.query_2(GateID__eq=1,index='GateID-n-index')
+dbTable = Table('test_gate1')
+dbQuery = dbTable.query_2(Plotted__eq=0,index='Plotted-n-index')
+#dbScan = dbTable.scan(Plotted__eq=0)
 r = 1
 for res in dbQuery:
     #Get Item
     t = str(r)
-    plotted = dbTable.get_item(uuid=t)
+    pl = res['uuid']
+    plotted = dbTable.get_item(uuid=pl)
     print(str(plotted['In']) + str(plotted['Plotted']))
     r += 1
     #Resources
