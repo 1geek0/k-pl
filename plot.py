@@ -33,7 +33,7 @@ for res in dbQuery:
     if res['Plotted'] != 1:
         #Plotting
        # print("New Plot")
-        inStream = py.Stream('l1plr75pg4')
+        inStream = py.Stream('oij5ld5l72')
         inStream.open()
         inStream.write(dict(x=td, y=inInt))
         inStream.close()

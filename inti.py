@@ -7,7 +7,7 @@ import plotly.tools as tls
 from plotly.graph_objs import *
 
 stream = Stream(
-token='l1plr75pg4', #Token Here
+token='oij5ld5l72', #Token Here
 maxpoints=100
 )
 TotalIn = Scatter(
@@ -17,7 +17,7 @@ mode='lines+markers',
 stream=stream
 )
 data = Data([TotalIn])
-al = "15 Aug"
+al = "16 Aug Shravani Somwar Kapaleshwar"
 layout = Layout(title=al)
 fig = Figure(data=data, layout=layout)
 unique_url = py.plot(fig, filename=al)
