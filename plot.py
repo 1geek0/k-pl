@@ -1,5 +1,6 @@
 from __future__ import print_function
 import csv
+import time
 import mmap
 import plotly.plotly as py
 from plotly.graph_objs import *
@@ -8,40 +9,37 @@ import plotly.tools as tls
 from boto.dynamodb2.table import *;
 
 #DynamoDB initialization
-dbTable = Table('test_gate1')
-dbQuery = dbTable.query_2(Plotted__eq=0,index='Plotted-n-index')
+dbTable = Table('ashioto1')
+dbQuery = dbTable.query_2(plotted__eq=0,index='plotted-index')
+plots = []
 #dbScan = dbTable.scan(Plotted__eq=0)
-r = 1
 for res in dbQuery:
     #Get Item
-    t = str(r)
-    pl = res['uuid']
-    plotted = dbTable.get_item(uuid=pl)
-    print(str(plotted['In']) + str(plotted['Plotted']))
-    r += 1
+    pl = res['timestamp']
+    plotted = dbTable.get_item(timestamp=pl)
+    print(str(plotted['outcount']) + str(plotted['plotted']))
     #Resources
-    inInt = int(res['In'])
+    outInt = int(res['outcount'])
     #Time
-    yearInt = int(res['Year'])
-    monthInt = int(res['Month'])
-    dateInt = int(res['Date'])
-    hourInt = int(res['Hour'])
-    minuteInt = int(res['Minute'])
-    secondInt = int(res['Second'])
-    td = datetime(year=yearInt, month=monthInt, day=dateInt, hour=hourInt, minute=minuteInt, second=secondInt)
+    timestamp = res['timestamp']
+    td = datetime.strptime(timestamp, "%Y/%m/%d %H:%M:%S")
+    
     #Time Ends
-    if res['Plotted'] != 1:
+    if res['plotted'] != 1:
         #Plotting
        # print("New Plot")
-        inStream = py.Stream('oij5ld5l72')
-        inStream.open()
-        inStream.write(dict(x=td, y=inInt))
-        inStream.close()
-        plotted['Plotted'] = 1
-        plotted.save()
+       plots.append(res)
+       plots.sort()
     #else:
       #  print("Already Plotted")
-
+plots.sort()
+for plotPoint in plots:
+    inStream = py.Stream('qantwq6c5u')
+    inStream.open()
+    inStream.write(dict(x=td, y=outInt))
+    inStream.close()
+    plotted['plotted'] = 1
+    plotted.save()
 
 dsbfddfbdb = '''dataFile = open('/home/geek/k-pl/data.csv', 'a+')
 doneFile = open('/home/geek/k-pl/done.log', 'a+')
