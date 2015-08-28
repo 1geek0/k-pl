@@ -6,41 +6,59 @@ import plotly.plotly as py
 from plotly.graph_objs import *
 from datetime import datetime
 import plotly.tools as tls
-from boto.dynamodb2.table import *;
+from boto.dynamodb2.table import *
+from operator import itemgetter
 
 #DynamoDB initialization
 dbTable = Table('ashioto1')
 dbQuery = dbTable.query_2(plotted__eq=0,index='plotted-index')
-plots = []
+amardhamList = []
+mandirList = []
 #dbScan = dbTable.scan(Plotted__eq=0)
 for res in dbQuery:
     #Get Item
     pl = res['timestamp']
     plotted = dbTable.get_item(timestamp=pl)
-    print(str(plotted['outcount']) + str(plotted['plotted']))
     #Resources
     outInt = int(res['outcount'])
     #Time
     timestamp = res['timestamp']
     td = datetime.strptime(timestamp, "%Y/%m/%d %H:%M:%S")
-    
+    gateID = str(res['gateID'])
+    if gateID == '1':
+        amardhamList.append(res)
+    elif gateID == '2':
+        mandirList.append(res)
     #Time Ends
-    if res['plotted'] != 1:
-        #Plotting
-       # print("New Plot")
-       plots.append(res)
-       plots.sort()
+    # if res['plotted'] != 1:
+    #     #Plotting
+    #    # print("New Plot")
+    #    plots.append(res)
+    #    plots.sort(key=itemgetter('timestamp'))
     #else:
       #  print("Already Plotted")
-plots.sort()
-for plotPoint in plots:
-    inStream = py.Stream('qantwq6c5u')
+amardhamList.sort(key=itemgetter('timestamp'))
+mandirList.sort(key=itemgetter('timestamp'))
+for plotPoint in amardhamList:
+    inStream = py.Stream('l6h8qom5na')
+    print(inStream)
     inStream.open()
     inStream.write(dict(x=td, y=outInt))
     inStream.close()
     plotted['plotted'] = 1
     plotted.save()
-
+    print('AMAR')
+        
+for plotPoint in mandirList:
+    inStream = py.Stream('cpgedgpn9v')
+    print(inStream)
+    inStream.open()
+    inStream.write(dict(x=td, y=outInt))
+    inStream.close()
+    plotted['plotted'] = 1
+    plotted.save()
+    print('TALK')
+    
 dsbfddfbdb = '''dataFile = open('/home/geek/k-pl/data.csv', 'a+')
 doneFile = open('/home/geek/k-pl/done.log', 'a+')
 
